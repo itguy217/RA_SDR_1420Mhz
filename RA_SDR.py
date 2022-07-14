@@ -41,7 +41,9 @@ def animate(i, xs, ys):
     #samples = sdr.read_samples(128*1024) This is where you would add to database
     # Inputting data from the signal received from the feedhorn
     samples = sdr.read_samples(1024*1024)
-    #samchart = sdr.read_samples(1024*1024)
+    
+    #global FileSample
+    FileSample = sum(samples)/len(samples)*-262144 - 75
     
     # use matplotlib to estimate and plot the PSD   (matplotlib.pyplot.)
     # Other Graph options are: graph_out.magnitude_spectrum, graph_out.specgram
@@ -62,9 +64,7 @@ def animate(i, xs, ys):
     
     #Strip Chart look
     xs.append(dt.datetime.now().strftime('%H:%M:%S'))
-    ys.append(sum(samples)/len(samples)*-262144 - 75)
-    
-    # Show 50 entries before dropping off the beginning data points
+    ys.append(FileSample)
     xs = xs[-50:]
     ys = ys[-50:]
     ax1.clear()
@@ -76,18 +76,19 @@ def animate(i, xs, ys):
     plt.ylabel("Intensity")
     plt.grid(color = 'green', linestyle = 'dashed', linewidth = 0.5)
     
-    #Write data to file-- might need to add another thread to do this.
-    #rdata = open("obs.cvs", "a")
-    #rdata.write(dt.datetime.now().strftime('%H:%M:%S') + " " + (sum(samples)/len(samples)*-262144 - 75) + ",\n")
-    #rdata.close()
+    #Write data to file.
+    val = np.complex128(FileSample)
+    pysamp = val.item()
+    
+    rdata = open("obs.cvs", "a")
+    rdata.write(dt.datetime.now().strftime('%H:%M:%S') + " " + str(pysamp) + ",\n")
+    rdata.close()
 try:
     ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
 
     plt.show()
-
-            
+                
 except KeyboardInterrupt:
     pass
 finally:
     sdr.close()
-
