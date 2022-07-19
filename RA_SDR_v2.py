@@ -12,6 +12,7 @@ from rtlsdr import RtlSdr
 import numpy as np
 from matplotlib.gridspec import GridSpec
 import datetime as dt
+from datetime import datetime
 import os
 
 
@@ -75,9 +76,10 @@ def animate(i, xs, ys):
     plt.grid(color = 'green', linestyle = 'dashed', linewidth = 0.5)
     
     #Write data to file.
+    filedate = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     val = np.abs(FileSample)
     pysamp = val.item()
-    rdata = open("obs.csv", "a")
+    rdata = open(filedate + "_obs.csv", "a")
     rdata.write(dt.datetime.now().strftime('%H:%M:%S') + ", " + str(pysamp) + "\n")
     rdata.close()
 try:
