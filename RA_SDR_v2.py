@@ -85,7 +85,7 @@ try:
     ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
 
     plt.show()
-    os.sys.exit(0)            
+            
 except KeyboardInterrupt:
     pass
 finally:
