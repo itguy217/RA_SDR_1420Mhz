@@ -19,7 +19,7 @@ from tkinter import filedialog
 initialdir = '/home/pi/Desktop/'
 
 #no need to change anything here as it gets overwritten
-filename = 'osb.cvs'
+filename = 'obs.cvs'
 
 
 
@@ -40,10 +40,10 @@ def run():
     xs = np.array(Time1)  # You don't really need to do this but I've left it in
     ys = np.array(RadioData)
 
-    fig, ax = plt.subplots() # using matplotlib's Object Oriented API
+    fig, ax = plt.subplots(figsize=(30,14)) # using matplotlib's Object Oriented API
     fig.patch.set_facecolor('xkcd:mint green')
-    plt.title = "RA DATA"
-    ax.set_title('RA data')
+    fig.canvas.set_window_title('Python SDR - Radio Astronomy Viewing Data)
+    
     ax.set_xlabel('Time')
     ax.set_ylabel('Intensity')
     ax.plot_date(xs, ys, 'k-')
@@ -51,6 +51,7 @@ def run():
 
     hfmt = mdates.DateFormatter('%H:%M:%S')
     ax.xaxis.set_major_formatter(hfmt)
+    plt.title(filename)
     plt.gcf().autofmt_xdate()
     plt.grid()
     plt.gca().get_lines()[0].set_color("red")
