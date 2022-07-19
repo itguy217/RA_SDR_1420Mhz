@@ -76,7 +76,6 @@ def animate(i, xs, ys):
     plt.grid(color = 'green', linestyle = 'dashed', linewidth = 0.5)
     
     #Write data to file.
-    #filedate = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     val = np.abs(FileSample)
     pysamp = val.item()
     rdata = open("obs.csv", "a")
@@ -91,3 +90,5 @@ except KeyboardInterrupt:
     pass
 finally:
     sdr.close()
+    filedate = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    os.rename('obs.csv', filedate + '_obs.csv')
