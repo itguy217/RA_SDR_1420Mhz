@@ -92,3 +92,4 @@ finally:
     sdr.close()
     filedate = datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     os.rename('obs.csv', filedate + '_obs.csv')
+    os.sys.exit(0)
