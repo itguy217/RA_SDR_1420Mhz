@@ -12,33 +12,91 @@ import datetime
 import numpy as np
 import re
 
-string = open('obs.csv').read()
-new_Line = re.sub('\d+:\d+:\d+,\s\d{0,4}$', '', string)
+from tkinter import *
+from tkinter import filedialog
 
-open('Fobs.csv', 'w').write(new_Line)
+#Pi Desktop location - You can change this location
+initialdir = '/home/pi/Desktop/'
 
-I020 = [ line.strip('\n').split(",") for line in open('Fobs.csv')][1:]
-  
-Time = [datetime.datetime.strptime(line[0],"%H:%M:%S") for line in I020]
-Time1 = [mdates.date2num(line) for line in Time]
-    
-RadioData = [float(line[1]) for line in I020]
+#no need to change anything here as it gets overwritten
+filename = 'osb.cvs'
 
 
-xs = np.array(Time1)  # You don't really need to do this but I've left it in
-ys = np.array(RadioData)
 
-fig, ax = plt.subplots() # using matplotlib's Object Oriented API
-fig.patch.set_facecolor('xkcd:mint green')
-ax.set_title('RA data')
-ax.set_xlabel('Time')
-ax.set_ylabel('Intensity')
-ax.plot_date(xs, ys, 'k-')
-ax.set_facecolor('xkcd:cream')
+def run():
+    string = open(filename).read()
+    new_Line = re.sub('\d+:\d+:\d+,\s\d{0,4}$', '', string)
 
-hfmt = mdates.DateFormatter('%H:%M:%S')
-ax.xaxis.set_major_formatter(hfmt)
-plt.gcf().autofmt_xdate()
-plt.grid()
-plt.gca().get_lines()[0].set_color("red")
-plt.show()
+    open('Fobs.csv', 'w').write(new_Line)
+
+    I020 = [ line.strip('\n').split(",") for line in open('Fobs.csv')][1:]
+      
+    Time = [datetime.datetime.strptime(line[0],"%H:%M:%S") for line in I020]
+    Time1 = [mdates.date2num(line) for line in Time]
+        
+    RadioData = [float(line[1]) for line in I020]
+
+
+    xs = np.array(Time1)  # You don't really need to do this but I've left it in
+    ys = np.array(RadioData)
+
+    fig, ax = plt.subplots() # using matplotlib's Object Oriented API
+    fig.patch.set_facecolor('xkcd:mint green')
+    plt.title = "RA DATA"
+    ax.set_title('RA data')
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Intensity')
+    ax.plot_date(xs, ys, 'k-')
+    ax.set_facecolor('xkcd:cream')
+
+    hfmt = mdates.DateFormatter('%H:%M:%S')
+    ax.xaxis.set_major_formatter(hfmt)
+    plt.gcf().autofmt_xdate()
+    plt.grid()
+    plt.gca().get_lines()[0].set_color("red")
+    plt.show()
+
+
+# Function for opening the
+# file explorer window
+def browseFiles():
+    global filename
+    global initialdir
+    filename = filedialog.askopenfilename(initialdir = initialdir, title = "Select a File",filetypes = (("CSV files","*.csv*"),("all files","*.*")))
+
+    # Change label contents
+    label_file_explorer.configure(text="File Opened: "+filename)
+
+# Create the root window
+window = Tk()
+
+# Set window title
+window.title('Python File Explorer')
+
+# Set window size
+window.geometry("600x170")
+
+#Set window background color
+window.config(background = "lightgray")
+
+# Create a File Explorer label
+label_file_explorer = Label(window,text = "Python Tkinter File Explorer",width = 65, height = 4,fg = "blue")
+
+button_explore = Button(window,text = "Browse Files",command = browseFiles)
+button_open = Button(window,text = "Open File",command=lambda: run())
+button_exit = Button(window,text = "EXIT",command = exit)
+
+# Grid method is chosen for placing
+# the widgets at respective positions
+# in a table like structure by
+# specifying rows and columns
+label_file_explorer.grid(column = 1, row = 1)
+
+button_explore.grid(column = 1, row = 2)
+
+button_open.grid(column = 1,row = 3)
+
+button_exit.grid(column = 1,row = 4)
+
+# Let the window wait for any events
+window.mainloop()
