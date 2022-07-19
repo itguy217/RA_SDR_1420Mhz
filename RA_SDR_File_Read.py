@@ -42,7 +42,7 @@ def run():
 
     fig, ax = plt.subplots(figsize=(30,14)) # using matplotlib's Object Oriented API
     fig.patch.set_facecolor('xkcd:mint green')
-    fig.canvas.set_window_title('Python SDR - Radio Astronomy Viewing Data)
+    fig.canvas.set_window_title('Python SDR - Radio Astronomy Viewing Data')
     
     ax.set_xlabel('Time')
     ax.set_ylabel('Intensity')
