@@ -100,3 +100,4 @@ button_exit.grid(column = 1,row = 4)
 
 # Let the window wait for any events
 window.mainloop()
+os.sys.exit(0)
